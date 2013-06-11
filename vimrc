@@ -206,7 +206,9 @@ set showcmd
 "---------------------------------------
 " Vertical color line at column 80
 "---------------------------------------
-set colorcolumn=81
+if version >= 703
+  set colorcolumn=81
+endif
 "---------------------------------------
 "set diffexpr=MyDiff()
 "---------------------------------------
