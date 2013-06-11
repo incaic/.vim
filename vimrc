@@ -114,11 +114,11 @@ behave xterm
 "---------------------------------------
 " Switch on search pattern highlighting
 "---------------------------------------
-set hlsearch		
+set hlsearch
 "---------------------------------------
 " enable mouse
 "---------------------------------------
-set mouse=a 
+set mouse=a
 "---------------------------------------
 " Pop-up window when right-click
 "---------------------------------------
@@ -126,7 +126,7 @@ set mousemodel=popup
 "---------------------------------------
 " Hide the mouse pointer while typing
 "---------------------------------------
-set mousehide		
+set mousehide
 "---------------------------------------
 " Always show line numbers
 "---------------------------------------
@@ -163,11 +163,11 @@ set vb t_vb=
 "---------------------------------------
 " Show the matching bracket for # of tenths of seconds
 "---------------------------------------
-set matchtime=20        
+set matchtime=20
 "---------------------------------------
-" Match <> Pairs 
+" Match <> Pairs
 "---------------------------------------
-set matchpairs+=<:> 
+set matchpairs+=<:>
 "---------------------------------------
 " setup how cursor looks
 "---------------------------------------
@@ -179,17 +179,17 @@ set matchpairs+=<:>
 "set guicursor+=r-cr:hor20-Cursor/lCursor
 "set guicursor+=sm:block-Cursor-blinkwait175-blinkoff150-blinkon175
 "---------------------------------------
-" List mode characters 
+" List mode characters
 "---------------------------------------
 "set listchars=extends:>,tab:>-,trail:-
 "---------------------------------------
 " avoid wrapping lines to mix with line numbers
 "---------------------------------------
-set showbreak=>\  
+set showbreak=>\
 "---------------------------------------
 " Minimum # of screen lines to keep above and below
 "---------------------------------------
-set scrolloff=2         
+set scrolloff=2
 "---------------------------------------
 " set everything to 2 spaces
 "---------------------------------------
@@ -200,7 +200,7 @@ set tabstop=2 softtabstop=2  shiftwidth=2 expandtab
 "---------------------------------------
 set t_ti= t_te=
 "---------------------------------------
-" expression evaluated 
+" expression evaluated
 "---------------------------------------
 set showcmd
 "---------------------------------------
@@ -220,14 +220,14 @@ set foldmethod=marker foldcolumn=2 foldminlines=1
 match ExtraWhitespace /\s\+$/
 nnoremap ,rtw :%s/\s\+$//e<CR>
 "------------------------------------------------------------------------------
-"			LETTING 
+"	LETTING
 "------------------------------------------------------------------------------
 " XDebug
 "---------------------------------------
 let g:vdebug_features = {
 \  'max_children' : 512,
 \  'max_data' : 2048,
-\  'max_depth' : 10 
+\  'max_depth' : 10
 \}
 "---------------------------------------
 " Nerdtree
@@ -246,13 +246,13 @@ let g:netrw_altv=1
 "---------------------------------------
 let g:netrw_banner=0
 "---------------------------------------
-"don't cache dirs, always show actual content 
+"don't cache dirs, always show actual content
 "---------------------------------------
 let g:netrw_fastbrowse=0
 "---------------------------------------
 " Highlight strings inside C comments
 "---------------------------------------
-let c_comment_strings=1   
+let c_comment_strings=1
 "---------------------------------------
 " PHP stuff - suggested by Drupal
 "---------------------------------------
@@ -296,7 +296,7 @@ let php_folding=1
 "---------------------------------------
 "let php_sync_method=x
 "------------------------------------------------------------------------------
-"			MAPS - Alphabetical Chars
+"	MAPS - Alphabetical Chars
 "------------------------------------------------------------------------------
 " graphical lines downward
 "---------------------------------------
@@ -310,7 +310,7 @@ map k gk
 "---------------------------------------
 map Q gq
 "------------------------------------------------------------------------------
-"			MAPS - <F#> Chars
+"	MAPS - <F#> Chars
 "------------------------------------------------------------------------------
 " Align on =
 "---------------------------------------
@@ -324,14 +324,14 @@ map Q gq
 "---------------------------------------
 map <F11> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<". synIDattr(synIDtrans(synID(line("."),col("."),1)),"name").">"<CR>
 "------------------------------------------------------------------------------
-"			MAPS - < Chars
+"	MAPS - < Chars
 "------------------------------------------------------------------------------
 " Move to tab left, right
 "---------------------------------------
 map <H <ESC>gT<CR>
 map <L <ESC>gt<CR>
 "------------------------------------------------------------------------------
-"			MAPS - , Chars
+"	MAPS - , Chars
 "------------------------------------------------------------------------------
 " cd to the current buffer's directory
 "---------------------------------------
@@ -363,7 +363,7 @@ nnoremap ,p :set invpaste paste?<CR>
 set pastetoggle=,p
 set showmode
 "---------------------------------------
-" squeeze lines 
+" squeeze lines
 "---------------------------------------
 map ,sl :g/^$/,/./-j
 "---------------------------------------
@@ -417,13 +417,13 @@ map ,vbw :BreakpointWindow<CR>
 "---------------------------------------
 " XDebug - VdebugBreakpoints
 "---------------------------------------
-map ,vbr :BreakpointRemove 
+map ,vbr :BreakpointRemove
 "---------------------------------------
 " XDebug - VdebugEval
 "---------------------------------------
-map ,ve :VdebugEval 
+map ,ve :VdebugEval
 "------------------------------------------------------------------------------
-"			MAPS - \ Chars
+"	MAPS - \ Chars
 "------------------------------------------------------------------------------
 " WinPos 0 WIDE (0 0)
 "---------------------------------------
@@ -491,7 +491,7 @@ map \u :cd ..<CR>\l
 "---------------------------------------
 map \w :w<CR>
 "-----------------------------------------------------------------------------
-"                       MAPS - Ctrl Chars
+" MAPS - Ctrl Chars
 "-----------------------------------------------------------------------------
 " Select All
 "---------------------------------------
@@ -508,29 +508,15 @@ map <C-j> 10j
 map <C-k> 10k
 map <C-h> 10h
 map <C-l> 10l
-"-----------------------------------------------------------------------------
-"                       MAPS - Meta Chars
-"-----------------------------------------------------------------------------
-" Write
-"---------------------------------------
-map <M-1> :w<CR>
-"---------------------------------------
-" Quit
-"---------------------------------------
-map <M-2> :q<CR>
-"---------------------------------------
-" Write & Quit
-"---------------------------------------
-map <M-3> :wq<CR>
 "------------------------------------------------------------------------------
-"			MAPS - Other Chars
+"	MAPS - Other Chars
 "------------------------------------------------------------------------------
 " Make shift-insert work like in Xterm
 "---------------------------------------
 map  <S-Insert> <MiddleMouse>
 map! <S-Insert> <MiddleMouse>
 "------------------------------------------------------------------------------
-"			INSERT MAPS - \ Chars
+"	INSERT MAPS - \ Chars
 "------------------------------------------------------------------------------
 " comment divider 20, 40, 80
 "---------------------------------------
@@ -603,43 +589,30 @@ imap <C-0> <Home>
 "---------------------------------------
 imap <C-$> <End>
 "------------------------------------------------------------------------------
-"			VISUAL MAPS - Alphabetical Chars
+"	VISUAL MAPS - Alphabetical Chars
 "------------------------------------------------------------------------------
-" Make p in Visual mode replace the 
+" Make p in Visual mode replace the
 " selected text with the "" register.
 "---------------------------------------
 vnoremap p <Esc>:let current_reg = @"<CR>gvdi<C-R>=current_reg<CR><Esc>
 "------------------------------------------------------------------------------
-"			SOURCES
+" Color Management
 "------------------------------------------------------------------------------
-" personal functions
-"---------------------------------------
-"so $HOME/.vim/.vimFUN
-"---------------------------------------
-" personal Autocommands
-"---------------------------------------
-"so $HOME/.vim/.vimAU
-"---------------------------------------
-" Enable/Disable colors
-"---------------------------------------
 function Do256()
   " Enable 256 colors
   set t_Co=256
   set t_AB=[48;5;%dm
   set t_AF=[38;5;%dm
 endfu
-
 function UnDo256()
   " Disable 256 colors
-  set t_Co &vim 
+  set t_Co &vim
   set t_AB &vim
   set t_AF &vim
 endfu
-
 if match($TERMCAP, 'Co#256:') == 0 || match($TERMCAP, ':Co#256:') > 0 || match($TERM, 'screen') == 0
   call Do256()
 endif
-
 com! -nargs=* Color256 exe Do256()
 com! -nargs=* UnColor256 exe UnDo256()
 "------------------------------------------------------------------------------
