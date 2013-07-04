@@ -218,6 +218,7 @@ set foldmethod=marker foldcolumn=2 foldminlines=1
 "set foldtext=v:folddashes.substitute(getline(v:foldstart+1),'/\\*\\\|\\*/\\\|{{{\\d\\=','','g')
 "---------------------------------------
 " Show trailing whitespace
+" Remove trailing whitespace
 "---------------------------------------
 match ExtraWhitespace /\s\+$/
 nnoremap ,rtw :%s/\s\+$//e<CR>
