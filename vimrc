@@ -25,12 +25,15 @@ execute pathogen#infect()
 "Bundle 'scrooloose/nerdtree'
 "Bundle 'scrooloose/syntastic'
 "Bundle 'joonty/vdebug'
+"Bundle 'miripiruni/CSScomb-for-Vim'
+"       'csscomb/vim-csscomb'
 " --------------------
 " highlighting
 " --------------------
 "Bundle 'jelera/vim-javascript-syntax'
 "Bundle 'cakebaker/scss-syntax.vim'
 "Bundle 'tpope/vim-haml'
+"Bundle 'hail2u/vim-css3-syntax'
 " --------------------
 " color schemes
 " --------------------
