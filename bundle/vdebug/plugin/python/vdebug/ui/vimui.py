@@ -29,15 +29,21 @@ class Ui(vdebug.ui.interface.Ui):
         if self.is_open:
             return
         self.is_open = True
-        
+
         try:
+            existing_buffer = True
             cur_buf_name = vim.eval("bufname('%')")
             if cur_buf_name is None:
+                existing_buffer = False
                 cur_buf_name = ''
 
             self.current_tab = vim.eval("tabpagenr()")
 
-            vim.command('silent tabnew ' + cur_buf_name)
+            vim.command('silent tabnew')
+            self.empty_buf_num = vim.eval('bufnr("%")')
+            if existing_buffer:
+                vim.command('call vdebug:edit("%s")' % cur_buf_name)
+
             self.tabnr = vim.eval("tabpagenr()")
 
             srcwin_name = self.__get_srcwin_name()
@@ -94,7 +100,7 @@ class Ui(vdebug.ui.interface.Ui):
         self.statuswin.insert(details,1,True)
 
     def get_current_file(self):
-        return vdebug.util.FilePath(vim.current.buffer.name)
+        return vdebug.util.LocalFilePath(vim.current.buffer.name)
 
     def get_current_row(self):
         return vim.current.window.cursor[0]
@@ -157,18 +163,21 @@ class Ui(vdebug.ui.interface.Ui):
             return
         self.is_open = False
 
+        vdebug.log.Log.remove_logger('WindowLogger')
+        if self.tabnr:
+            vim.command('silent! '+self.tabnr+'tabc!')
+        if self.current_tab:
+            vim.command('tabn '+self.current_tab)
+
+        if self.empty_buf_num:
+            vim.command('bw' + self.empty_buf_num)
+
         if self.watchwin:
             self.watchwin.destroy()
         if self.stackwin:
             self.stackwin.destroy()
         if self.statuswin:
             self.statuswin.destroy()
-
-        vdebug.log.Log.remove_logger('WindowLogger')
-        if self.tabnr:
-            vim.command('silent! '+self.tabnr+'tabc!')
-        if self.current_tab:
-            vim.command('tabn '+self.current_tab)
 
         self.watchwin = None
         self.stackwin = None
@@ -221,7 +230,7 @@ class SourceWindow(vdebug.ui.interface.Window):
         self.file = file
         vdebug.log.Log("Setting source file: "+file,vdebug.log.Logger.INFO)
         self.focus()
-        vim.command("silent edit " + file)
+        vim.command('call vdebug:edit("%s")' % str(file).replace("\\", "\\\\"))
 
     def set_line(self,lineno):
         self.focus()
@@ -229,7 +238,7 @@ class SourceWindow(vdebug.ui.interface.Window):
 
     def get_file(self):
         self.focus()
-        self.file = vdebug.util.FilePath(vim.eval("expand('%:p')"))
+        self.file = vdebug.util.LocalFilePath(vim.eval("expand('%:p')"))
         return self.file
 
     def clear_signs(self):
@@ -261,7 +270,13 @@ class Window(vdebug.ui.interface.Window):
         return int(vim.eval("bufwinnr('"+self.name+"')"))
 
     def set_height(self,height):
-        self.command('set winheight=%s' % str(height))
+        height = int(height)
+        minheight = int(vim.eval("&winminheight"))
+        if height < minheight:
+            height = minheight
+        if height <= 0:
+            height = 1
+        self.command('set winheight=%i' % height)
 
     def write(self, msg, return_focus = True, after = "normal G"):
         if not self.is_open:
@@ -332,7 +347,8 @@ class Window(vdebug.ui.interface.Window):
         if self.buffer == None or len(dir(self.buffer)) == 0:
             return
         self.is_open = False
-        self.command('bwipeout ' + self.name)
+        if int(vim.eval('buffer_exists("'+self.name+'")')) == 1:
+            vim.command('bwipeout ' + self.name)
 
     def clean(self):
         """ clean all datas in buffer """
@@ -442,10 +458,10 @@ class StatusWindow(Window):
     def on_create(self):
         keys = vdebug.util.Keymapper()
         output = "Status: starting\nListening on port\nNot connected\n\n"
-        output += "Press %s to start debugging, " %(keys.run_key()) 
+        output += "Press %s to start debugging, " %(keys.run_key())
         output += "%s to stop/close. " %(keys.close_key())
         output += "Type :help Vdebug for more information."
-        
+
         self.write(output)
 
         self.command('setlocal syntax=debugger_status')
@@ -470,7 +486,7 @@ class StackGetResponseRenderer(ResponseRenderer):
         string = ""
         for s in stack:
             where = s.get('where') if s.get('where') else 'main'
-            file = vdebug.util.FilePath(s.get('filename'))
+            file = vdebug.util.LocalFilePath(s.get('filename'))
             line = "[%(num)s] %(where)s @ %(file)s:%(line)s" \
                     %{'num':s.get('level'),'where':where,\
                     'file':str(file),'line':s.get('lineno')}
@@ -510,20 +526,23 @@ class ContextGetResponseRenderer(ResponseRenderer):
         return res
 
     def __create_tabs(self):
-        res = ""
+        res = []
         if self.contexts:
             for id,name in self.contexts.iteritems():
                 if self.current_context == id:
                     name = "*"+name
-                res += "[ %s ] " % name
-            res += "\n\n"
-        return res
+                res.append("[ %s ]" % name)
+        if res:
+            return " ".join(res) + "\n\n"
+        else:
+            return ""
 
     def __render_property(self,p,next_p,last = False,indent = 0):
-        line = "%(indent)s %(marker)s %(name)s = (%(type)s) %(value)s\n" \
+        line = "%(indent)s %(marker)s %(name)s = (%(type)s)%(value)s" \
                 %{'indent':"".rjust((p.depth * 2)+indent),\
-                'marker':self.__get_marker(p),'name':p.display_name,\
-                'type':p.type_and_size(),'value':p.value}
+                'marker':self.__get_marker(p),'name':p.display_name.encode('latin1'),\
+                'type':p.type_and_size(),'value': " " + p.value}
+        line = line.rstrip() + "\n"
 
         if vdebug.opts.Options.get('watch_window_style') == 'expanded':
             depth = p.depth

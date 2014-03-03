@@ -51,7 +51,7 @@ class Response:
 
     def as_string(self):
         """Return the full response as a string.
-        
+
         There is a __str__ method, which will render the
         whole object as a string and should be used for
         displaying.
@@ -82,7 +82,7 @@ class Response:
 class ContextNamesResponse(Response):
     def names(self):
         names = {}
-        for c in self.as_xml().getchildren():
+        for c in list(self.as_xml()):
             names[int(c.get('id'))] = c.get('name')
         return names
 
@@ -96,11 +96,11 @@ class StackGetResponse(Response):
     """Response object used by the stack_get command."""
 
     def get_stack(self):
-        return self.as_xml().getchildren()
+        return list(self.as_xml())
 
 class ContextGetResponse(Response):
     """Response object used by the context_get command.
-    
+
     The property nodes are converted into ContextProperty
     objects, which are much easier to use."""
 
@@ -109,7 +109,7 @@ class ContextGetResponse(Response):
         self.properties = []
 
     def get_context(self):
-        for c in self.as_xml().getchildren():
+        for c in list(self.as_xml()):
             self.create_properties(ContextProperty(c))
 
         return self.properties
@@ -132,7 +132,7 @@ class EvalResponse(ContextGetResponse):
 
     def get_context(self):
         code = self.get_code()
-        for c in self.as_xml().getchildren():
+        for c in list(self.as_xml()):
             self.create_properties(EvalProperty(c,code,self.api.language))
 
         return self.properties
@@ -194,7 +194,7 @@ class Api:
         if self.conn.isconnected() == 0:
             self.conn.open()
         self.__parse_init_msg(self.conn.recv_msg())
-        
+
     def __parse_init_msg(self,msg):
         """Parse the init message from the debugger"""
         xml = ET.fromstring(msg)
@@ -238,7 +238,7 @@ class Api:
 
     def status(self):
         """Get the debugger status.
-        
+
         Returns a Response object.
         """
         return self.send_cmd('status','',StatusResponse)
@@ -247,9 +247,9 @@ class Api:
         """Get the value of a feature from the debugger.
 
         See the DBGP documentation for a list of features.
-        
+
         Returns a FeatureGetResponse object.
-        
+
         name -- name of the feature, e.g. encoding
         """
         return self.send_cmd(
@@ -261,9 +261,9 @@ class Api:
         """Set the value of a debugger feature.
 
         See the DBGP documentation for a list of features.
-        
+
         Returns a Response object.
-        
+
         name -- name of the feature, e.g. encoding
         value -- new value for the feature
         """
@@ -291,7 +291,7 @@ class Api:
     def step_into(self):
         """Tell the debugger to step to the next
         statement.
-        
+
         If there's a function call, the debugger engine
         will break on the first statement in the function.
         """
@@ -300,7 +300,7 @@ class Api:
     def step_over(self):
         """Tell the debugger to step to the next
         statement.
-        
+
         If there's a function call, the debugger engine
         will stop at the next statement after the function call.
         """
@@ -308,7 +308,7 @@ class Api:
 
     def step_out(self):
         """Tell the debugger to step out of the statement.
-        
+
         The debugger will step out of the current scope.
         """
         return self.send_cmd('step_out','',StatusResponse)
@@ -425,12 +425,12 @@ class Connection:
 
         self.isconned = 1
         serv.close()
-    
+
     def listen(self, serv, timeout):
         """Non-blocking listener. Provides support for keyboard interrupts from
-        the user. Although it's non-blocking, the user interface will still 
+        the user. Although it's non-blocking, the user interface will still
         block until the timeout is reached.
-        
+
         serv -- Socket server to listen to.
         timeout -- Seconds before timeout.
         """
@@ -495,7 +495,7 @@ class Connection:
 
     def recv_msg(self):
         """Receive a message from the debugger.
-        
+
         Returns a string, which is expected to be XML.
         """
         length = self.__recv_length()
@@ -520,7 +520,7 @@ class ContextProperty:
         self._determine_displayname(node)
         self.encoding = node.get('encoding')
         self.depth = depth
-        
+
         self.size = node.get('size')
         self.value = ""
         self.is_last_child = False
@@ -601,7 +601,7 @@ class ContextProperty:
         if self.has_children:
             idx = 0
             tagname = '%sproperty' % self.ns
-            children = node.getchildren()
+            children = list(node)
             if children is not None:
                 for c in children:
                     if c.tag == tagname:

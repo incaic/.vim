@@ -16,11 +16,29 @@ It's written in Python, and has an object-oriented interface that is easy to ext
 and can even be used from the command-line. It even has unit tests covering
 some of the more critical parts of the code.
 
-# Recent version (version 1.4.0)
+# Getting help
 
- * Allow setting of debugger features with the `g:vdebug_features` dictionary
- * Stop error when trying to debug with an unsaved file
- * Fixed stuck breakpoints
+If you're having trouble with Vdebug in any way, here are the steps you can take to get help (in the right order):
+
+  1. [Check the issues][3] to see whether it's already come up.
+  2. Visit the **#vdebug** irc channel on freenode, someone is normally there.
+  3. [Open a new issue.][4]
+
+# News
+
+Follow me on Twitter, [@joonty](http://twitter.com/joonty), for Vdebug updates and release news.
+
+**19/07/2013:** there's a known issue with Vdebug and Vim 7.4. Take a look at [issue #98][5] to follow updates and fixes.
+
+**11/06/2013:** Vdebug now has an irc channel on freenode! If you're running into problems installing, configuring or running vdebug, or you just want to ask a general question, join us on **#vdebug**.
+
+# Recent version (version 1.4.1)
+
+ * Fix folds being forgotten after debugging (issue #56)
+ * Don't overwrite features array if it exists (issue #59)
+ * Mapping of single modes (thanks @xbot, #66)
+ * Stop empty buffers from being created (issue #70)
+ * Fix ElementTree deprecation warning (thanks @InFog, #89)
  * And more... check out the HISTORY file
 
 # How to use
@@ -62,7 +80,7 @@ where the path supplied is vdebug's doc directory. This should enable vdebug's h
 
 **Requirements**:
 
-  * Vim compiled with Python 2.6+ support, tabs and signs
+  * Vim compiled with Python 2.6+ support, tabs and signs (for Debian/Ubuntu this is provided in the vim-nox package)
   * A programming language that has a DBGP debugger, e.g. PHP, Python, Ruby,
     Perl, NodeJS, Tcl...
 
@@ -134,8 +152,19 @@ If you're creating an issue then it's probably best to upload a log as a Gist, a
 
 I gladly accept contributions to the code. Just fork the repository, make your changes and open a pull request with detail about your changes. There are a couple of conditions:
 
- * The tests must pass (run `python vdebugtests.py` in the top directory of the plugin)
+ * The tests must pass (see below)
  * Your commit messages should follow the [rules outlined here][2]
+
+# Tests
+
+ * The tests use `unittest2` and `mock`, so make sure they're installed
+
+```
+pip install unittest2
+pip install mock
+```
+
+* To run the tests, run `python vdebugtests.py` in the top directory of the plugin
 
 # Licence
 
@@ -143,3 +172,6 @@ This plugin is released under the [MIT License][1].
 
 [1]: https://raw.github.com/joonty/vdebug/master/LICENCE
 [2]: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
+[3]: https://github.com/joonty/vdebug/issues/
+[4]: https://github.com/joonty/vdebug/issues/new
+[5]: https://github.com/joonty/vdebug/issues/98
