@@ -36,6 +36,7 @@ execute pathogen#infect()
 "Bundle 'tpope/vim-haml'
 "Bundle 'hail2u/vim-css3-syntax'
 "Bundle 'othree/html5.vim'
+"Bundle 'joestelmach/lint.vim'
 " --------------------
 " color schemes
 " --------------------
@@ -303,6 +304,49 @@ let php_folding=1
 " x = 0  : sync from start
 "---------------------------------------
 "let php_sync_method=x
+"------------------------------------------------------------------------------
+" Bundle Configurations
+"------------------------------------------------------------------------------
+" html5.vim 
+"---------------------------------------
+" Disable event-handler attributes support
+"---------------------------------------
+"let g:html5_event_handler_attributes_complete = 0
+"---------------------------------------
+" Disable RDFa attributes support
+"---------------------------------------
+"let g:html5_rdfa_attributes_complete = 0
+"---------------------------------------
+" Disable microdata attributes support
+"---------------------------------------
+"let g:html5_microdata_attributes_complete = 0
+"---------------------------------------
+" Disable WAI-ARIA attribute support
+"---------------------------------------
+"let g:html5_aria_attributes_complete = 0
+"---------------------------------------
+" lint.vim
+"---------------------------------------
+" external config files
+"---------------------------------------
+"let jshint_options_file = '/full/path/to/jshint/options.js'
+"let csshint_options_file = '/full/path/to/csshint/options.js'
+"---------------------------------------
+" Path to d8
+"---------------------------------------
+"let d8_ocmmand = '/full/path/to/d8'
+"---------------------------------------
+" Error highlight color
+"---------------------------------------
+"let jshint_highlight_color = 'DarkGray'
+"---------------------------------------
+" Default lint off
+"---------------------------------------
+"let lint_default = 0
+"---------------------------------------
+" Disable entire plugin
+"---------------------------------------
+"let lint_default = 0
 "------------------------------------------------------------------------------
 "	MAPS - Alphabetical Chars
 "------------------------------------------------------------------------------
