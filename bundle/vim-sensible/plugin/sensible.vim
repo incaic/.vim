@@ -20,14 +20,13 @@ endif
 set autoindent
 set backspace=indent,eol,start
 set complete-=i
-set showmatch
 set smarttab
 
 set nrformats-=octal
 set shiftround
 
 set ttimeout
-set ttimeoutlen=50
+set ttimeoutlen=100
 
 set incsearch
 " Use <C-L> to clear the highlighting of :set hlsearch.
@@ -59,6 +58,10 @@ if &listchars ==# 'eol:$'
   endif
 endif
 
+if &shell =~# 'fish$'
+  set shell=/bin/bash
+endif
+
 set autoread
 set fileformats+=mac
 
@@ -72,22 +75,6 @@ if !empty(&viminfo)
   set viminfo^=!
 endif
 
-let s:dir = has('win32') ? '$APPDATA/Vim' : match(system('uname'), "Darwin") > -1 ? '~/Library/Vim' : empty($XDG_DATA_HOME) ? '~/.local/share/vim' : '$XDG_DATA_HOME/vim'
-if isdirectory(expand(s:dir))
-  if &directory =~# '^\.,'
-    let &directory = expand(s:dir) . '/swap//,' . &directory
-  endif
-  if &backupdir =~# '^\.,'
-    let &backupdir = expand(s:dir) . '/backup//,' . &backupdir
-  endif
-  if exists('+undodir') && &undodir =~# '^\.\%(,\|$\)'
-    let &undodir = expand(s:dir) . '/undo//,' . &undodir
-  endif
-endif
-if exists('+undofile')
-  set undofile
-endif
-
 " Allow color schemes to do bright colors without forcing bold.
 if &t_Co == 8 && $TERM !~# '^linux'
   set t_Co=16
@@ -99,9 +86,5 @@ if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
 endif
 
 inoremap <C-U> <C-G>u<C-U>
-nnoremap & :&&<CR>
-xnoremap & :&&<CR>
-" Make Y consistent with C and D.  See :help Y.
-nnoremap Y y$
 
 " vim:set ft=vim et sw=2:
