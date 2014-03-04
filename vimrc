@@ -20,13 +20,14 @@ execute pathogen#infect()
 "call vundle#rc()
 "Bundle 'gmarik/vundle'
 " --------------------
-" useful tools
+" useful utilities
 " --------------------
 "Bundle 'scrooloose/nerdtree'
 "Bundle 'scrooloose/syntastic'
 "Bundle 'joonty/vdebug'
 "Bundle 'miripiruni/CSScomb-for-Vim'
 "       'csscomb/vim-csscomb'
+"Bundle 'joestelmach/lint.vim'
 " --------------------
 " highlighting
 " --------------------
@@ -34,6 +35,7 @@ execute pathogen#infect()
 "Bundle 'cakebaker/scss-syntax.vim'
 "Bundle 'tpope/vim-haml'
 "Bundle 'hail2u/vim-css3-syntax'
+"Bundle 'othree/html5.vim'
 " --------------------
 " color schemes
 " --------------------
