@@ -118,6 +118,10 @@ set viminfo='20,\"50,h,%,n~/.vim/_viminfo
 "---------------------------------------
 behave xterm
 "---------------------------------------
+" Use clipboard for all operations
+"---------------------------------------
+set clipboard=unnamed
+"---------------------------------------
 " Switch on search pattern highlighting
 "---------------------------------------
 set hlsearch
