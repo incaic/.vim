@@ -9,6 +9,10 @@ if exists("g:loaded_syntastic_typescript_tsc_checker")
 endif
 let g:loaded_syntastic_typescript_tsc_checker = 1
 
+if !exists('g:syntastic_typescript_tsc_sort')
+    let g:syntastic_typescript_tsc_sort = 1
+endif
+
 let s:save_cpo = &cpo
 set cpo&vim
 
@@ -26,8 +30,7 @@ function! SyntaxCheckers_typescript_tsc_GetLocList() dict
     return SyntasticMake({
         \ 'makeprg': makeprg,
         \ 'errorformat': errorformat,
-        \ 'defaults': {'bufnr': bufnr("")},
-        \ 'postprocess': ['sort'] })
+        \ 'defaults': {'bufnr': bufnr("")} })
 endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({

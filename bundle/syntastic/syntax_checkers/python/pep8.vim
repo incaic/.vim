@@ -9,8 +9,6 @@
 "             See http://sam.zoy.org/wtfpl/COPYING for more details.
 "
 "============================================================================
-"
-" For details about pep8 see: https://github.com/jcrocholl/pep8
 
 if exists("g:loaded_syntastic_python_pep8_checker")
     finish
@@ -25,9 +23,12 @@ function! SyntaxCheckers_python_pep8_GetLocList() dict
 
     let errorformat = '%f:%l:%c: %m'
 
+    let env = syntastic#util#isRunningWindows() ? {} : { 'TERM': 'dumb' }
+
     let loclist = SyntasticMake({
         \ 'makeprg': makeprg,
         \ 'errorformat': errorformat,
+        \ 'env': env,
         \ 'subtype': 'Style' })
 
     for e in loclist

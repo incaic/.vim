@@ -14,18 +14,23 @@ if exists("g:loaded_syntastic_javascript_jscs_checker")
 endif
 let g:loaded_syntastic_javascript_jscs_checker = 1
 
+if !exists('g:syntastic_javascript_jscs_sort')
+    let g:syntastic_javascript_jscs_sort = 1
+endif
+
 let s:save_cpo = &cpo
 set cpo&vim
 
 function! SyntaxCheckers_javascript_jscs_GetLocList() dict
     let makeprg = self.makeprgBuild({ 'args_after': '--no-colors --reporter checkstyle' })
+
     let errorformat = '%f:%t:%l:%c:%m'
+
     return SyntasticMake({
         \ 'makeprg': makeprg,
         \ 'errorformat': errorformat,
         \ 'subtype': 'Style',
         \ 'preprocess': 'checkstyle',
-        \ 'postprocess': ['sort'],
         \ 'returns': [0, 2] })
 endfunction
 

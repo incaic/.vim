@@ -9,16 +9,15 @@
 "             See http://sam.zoy.org/wtfpl/COPYING for more details.
 "
 "============================================================================
-"
-" For details about PrettyCSS see:
-"
-"   - http://fidian.github.io/PrettyCSS/
-"   - https://github.com/fidian/PrettyCSS
 
 if exists("g:loaded_syntastic_css_prettycss_checker")
     finish
 endif
 let g:loaded_syntastic_css_prettycss_checker = 1
+
+if !exists('g:syntastic_css_prettycss_sort')
+    let g:syntastic_css_prettycss_sort = 1
+endif
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -26,7 +25,7 @@ set cpo&vim
 function! SyntaxCheckers_css_prettycss_GetHighlightRegex(item)
     let term = matchstr(a:item["text"], '\m (\zs[^)]\+\ze)$')
     if term != ''
-        let term = '\V' . term
+        let term = '\V' . escape(term, '\')
     endif
     return term
 endfunction
@@ -43,8 +42,7 @@ function! SyntaxCheckers_css_prettycss_GetLocList() dict
     let loclist = SyntasticMake({
         \ 'makeprg': makeprg,
         \ 'errorformat': errorformat,
-        \ 'defaults': {'bufnr': bufnr("")},
-        \ 'postprocess': ['sort'] })
+        \ 'defaults': {'bufnr': bufnr("")} })
 
     for e in loclist
         let e["text"] .= ')'
